@@ -1,4 +1,5 @@
-import { DetailedHTMLProps, KeyboardEventHandler } from 'react'
+import { DetailedHTMLProps, KeyboardEventHandler, useRef } from 'react'
+import { Input } from '@/components/ui/input'
 
 export default function ColorInput({
   value,
@@ -8,6 +9,8 @@ export default function ColorInput({
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 >) {
+  const ref = useRef<HTMLInputElement>(null)
+
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     switch (e.key) {
       case '1':
@@ -49,18 +52,31 @@ export default function ColorInput({
     }
   }
 
+  const handleClick = () => {
+    ref.current?.focus()
+  }
+
   return (
-    <input
-      type="text"
-      value={value}
-      minLength={6}
-      maxLength={6}
-      title="Enter a 6-digit hex color code"
-      pattern="^#?([a-fA-F0-9]{6})$"
-      required
-      onChange={onChange}
-      onKeyDown={handleKeyDown}
-      {...props}
-    />
+    <div
+      onClick={handleClick}
+      className="flex items-center border border-input h-10 w-full max-w-44 rounded-md bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none "
+    >
+      <span className="text-xl">#</span>
+      <Input
+        ref={ref}
+        value={value}
+        minLength={6}
+        maxLength={6}
+        title="Enter a 6-digit hex color code"
+        pattern="^#?([a-fA-F0-9]{6})$"
+        onChange={onChange}
+        onKeyDown={handleKeyDown}
+        className="border-none focus-visible:border-none focus-visible:ring-0"
+        {...props}
+      />
+      <span className="w-full justify-self-end">
+        {(value as string).length ?? 0} / 6
+      </span>
+    </div>
   )
 }

@@ -1,13 +1,15 @@
 import ColorDisplay from './game/color-display'
-import ColorInput from './game/color-input'
 import ColorGuessHistory from './game/color-guess-history'
 import { useColorGameStore } from '../stores/useColorGame'
 import Navbar from './navbar'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { Button } from './ui/button'
+import ShareDialog from './game/share-dialog'
+import OtpInput from './game/otp-input'
 
 export default function App() {
+  const [showShareDialog, setShowShareDialog] = useState(false)
   const toGuessColor = useColorGameStore((state) => state.toGuessColor)
   const history = useColorGameStore((state) => state.history)
   const color = useColorGameStore((state) => state.color)
@@ -15,6 +17,8 @@ export default function App() {
   const registerNewGuess = useColorGameStore((state) => state.registerNewGuess)
   const attemptsLeft = useColorGameStore((state) => state.attemptsLeft)
   const gameState = useColorGameStore((state) => state.gameState)
+
+  const attemptsMade = 5 - attemptsLeft
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
@@ -34,6 +38,7 @@ export default function App() {
     if (gameState === 'lost') {
       alert('You lost! The color was: ' + '#' + toGuessColor.color)
     } else if (gameState === 'won') {
+      setShowShareDialog(true)
       const interval = setInterval(() => {
         confetti({
           particleCount: 100,
@@ -65,9 +70,10 @@ export default function App() {
 
         <section className="mt-6 text-center">
           <form onSubmit={handleSubmit} className="flex gap-4 justify-center">
-            <ColorInput
+            <OtpInput
+              maxLength={6}
               value={color}
-              onChange={(e) => setColor(e.target.value)}
+              onChange={(color) => setColor(color)}
               disabled={gameState !== 'playing'}
             />
             <Button
@@ -89,6 +95,13 @@ export default function App() {
           </h2>
           <ColorGuessHistory guesses={history} />
         </section>
+        <ShareDialog
+          open={showShareDialog}
+          onClose={() => setShowShareDialog(false)}
+          guessedColor={'#' + toGuessColor.color}
+          attempts={attemptsMade}
+          hints={history}
+        />
       </main>
     </>
   )
