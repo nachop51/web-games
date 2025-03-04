@@ -5,6 +5,7 @@ import { useColorGameStore } from '../stores/useColorGame'
 import Navbar from './navbar'
 import { useEffect } from 'react'
 import confetti from 'canvas-confetti'
+import { Button } from './ui/button'
 
 export default function App() {
   const toGuessColor = useColorGameStore((state) => state.toGuessColor)
@@ -69,7 +70,12 @@ export default function App() {
               onChange={(e) => setColor(e.target.value)}
               disabled={gameState !== 'playing'}
             />
-            <button disabled={gameState !== 'playing'}>Check</button>
+            <Button
+              type="submit"
+              disabled={gameState !== 'playing' || color.length !== 6}
+            >
+              Check
+            </Button>
           </form>
         </section>
 

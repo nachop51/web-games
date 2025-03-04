@@ -1,5 +1,7 @@
 export type GuessHint = 'exact' | 'higher' | 'lower' | 'bitHigher' | 'bitLower'
 
+export type GameState = 'playing' | 'won' | 'lost'
+
 export type Guess = {
   v: string
   h: GuessHint

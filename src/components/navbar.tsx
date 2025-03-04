@@ -1,4 +1,5 @@
 import { useColorGameStore } from '../stores/useColorGame'
+import { Button } from './ui/button'
 
 export default function Navbar() {
   const resetGame = useColorGameStore((s) => s.resetGame)
@@ -9,7 +10,9 @@ export default function Navbar() {
         <h1 className="text-3xl font-semibold">Guess the color 🎨</h1>
 
         <div className="flex items-center space-x-4">
-          <button onClick={resetGame}>New game</button>
+          <Button variant="outline" onClick={resetGame}>
+            New game
+          </Button>
         </div>
       </div>
     </header>

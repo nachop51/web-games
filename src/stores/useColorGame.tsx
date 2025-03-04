@@ -1,6 +1,12 @@
 import { create } from 'zustand'
-import { ColorGuess } from '../lib/types'
+import { ColorGuess, GameState } from '../lib/types'
 import { getNewColor, measureDistance } from '../lib/functions'
+
+const INITIAL_STATE = {
+  attemptsLeft: 5,
+  gameState: 'playing' as GameState,
+  color: '',
+}
 
 interface ColorGameState {
   color: string
@@ -19,7 +25,7 @@ interface ColorGameState {
   setColor: (color: string) => void
   registerNewGuess: (guess: string) => void
   resetGame: () => void
-  gameState: 'playing' | 'won' | 'lost'
+  gameState: GameState
   attemptsLeft: number
 }
 
@@ -29,11 +35,12 @@ export const useColorGameStore = create<ColorGameState>()((set, get) => ({
     set({
       toGuessColor: getNewColor(),
       history: [],
-      attemptsLeft: 10,
-      gameState: 'playing',
+      color: INITIAL_STATE.color,
+      attemptsLeft: INITIAL_STATE.attemptsLeft,
+      gameState: INITIAL_STATE.gameState,
     }),
   history: [],
-  color: '',
+  color: INITIAL_STATE.color,
   setColor: (color) => set({ color }),
   registerNewGuess: (color) => {
     const { attemptsLeft, toGuessColor } = get()
@@ -81,6 +88,6 @@ export const useColorGameStore = create<ColorGameState>()((set, get) => ({
     }))
   },
 
-  attemptsLeft: 5,
-  gameState: 'playing',
+  attemptsLeft: INITIAL_STATE.attemptsLeft,
+  gameState: INITIAL_STATE.gameState,
 }))
