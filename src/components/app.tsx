@@ -1,6 +1,7 @@
-import GuessTheHexPage from '@/pages/guess-the-hex'
+import GuessTheHexPage from '@/pages/colorhexle/page'
 import Navbar from './navbar'
 import { Route, Switch } from 'wouter'
+import Page from '@/pages/page'
 
 export default function App() {
   return (
@@ -8,9 +9,10 @@ export default function App() {
       <Navbar />
 
       <Switch>
-        <Route path="/" component={() => <h1>hsad</h1>} />
+        <Route path="/" component={Page} />
         <Route path="/colorhexle" component={GuessTheHexPage} />
         <Route path="/guess-the-color" component={GuessTheHexPage} />
+        <Route path="*" component={() => '404'} />
       </Switch>
     </>
   )
