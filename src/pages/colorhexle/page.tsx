@@ -21,10 +21,6 @@ export default function GuessTheHexPage() {
 
   const attemptsMade = 5 - attemptsLeft
 
-  const handleGoBack = () => {
-    window.history.back()
-  }
-
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
 
@@ -60,7 +56,7 @@ export default function GuessTheHexPage() {
 
   return (
     <>
-      <Navbar title="ColorHexle" onGoBack={handleGoBack} onReset={resetGame} />
+      <Navbar title="ColorHexle" onReset={resetGame} />
       <main className="set-width">
         <section className="flex justify-between items-center space-x-8">
           <ColorDisplay
