@@ -2,6 +2,7 @@ import ColorDisplay from '@/components/game/color-display'
 import ColorGuessHistory from '@/components/game/color-guess-history'
 import OtpInput from '@/components/game/otp-input'
 import ShareDialog from '@/components/game/share-dialog'
+import Navbar from '@/components/navbar'
 import { Button } from '@/components/ui/button'
 import { useColorGameStore } from '@/stores/useColorGame'
 import confetti from 'canvas-confetti'
@@ -16,8 +17,13 @@ export default function GuessTheHexPage() {
   const registerNewGuess = useColorGameStore((state) => state.registerNewGuess)
   const attemptsLeft = useColorGameStore((state) => state.attemptsLeft)
   const gameState = useColorGameStore((state) => state.gameState)
+  const resetGame = useColorGameStore((state) => state.resetGame)
 
   const attemptsMade = 5 - attemptsLeft
+
+  const handleGoBack = () => {
+    window.history.back()
+  }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
@@ -53,50 +59,55 @@ export default function GuessTheHexPage() {
   }, [gameState, toGuessColor.color])
 
   return (
-    <main className="set-width">
-      <section className="flex justify-between items-center space-x-8">
-        <ColorDisplay
-          title="last guess"
-          color={history.length > 0 ? '#' + history[0]?.color : undefined}
-        />
-        <ColorDisplay
-          title="guess this color"
-          color={'#' + toGuessColor.color}
-        />
-      </section>
-
-      <section className="mt-6 text-center">
-        <form onSubmit={handleSubmit} className="flex gap-4 justify-center">
-          <OtpInput
-            maxLength={6}
-            value={color}
-            onChange={(color) => setColor(color)}
-            disabled={gameState !== 'playing'}
+    <>
+      <Navbar title="ColorHexle" onGoBack={handleGoBack} onReset={resetGame} />
+      <main className="set-width">
+        <section className="flex justify-between items-center space-x-8">
+          <ColorDisplay
+            title="last guess"
+            color={history.length > 0 ? '#' + history[0]?.color : undefined}
           />
-          <Button
-            type="submit"
-            disabled={gameState !== 'playing' || color.length !== 6}
-          >
-            Check
-          </Button>
-        </form>
-      </section>
+          <ColorDisplay
+            title="guess this color"
+            color={'#' + toGuessColor.color}
+          />
+        </section>
 
-      <section className="mt-4 text-center h-4">
-        <p>{attemptsLeft !== 5 && ` Remaining attempts: ${attemptsLeft}`}</p>
-      </section>
+        <section className="mt-6 text-center">
+          <form onSubmit={handleSubmit} className="flex gap-4 justify-center">
+            <OtpInput
+              maxLength={6}
+              value={color}
+              onChange={(color) => setColor(color)}
+              disabled={gameState !== 'playing'}
+            />
+            <Button
+              type="submit"
+              disabled={gameState !== 'playing' || color.length !== 6}
+            >
+              Check
+            </Button>
+          </form>
+        </section>
 
-      <section className="pb-8">
-        <h2 className="text-center font-semibold mt-12 mb-8">Guess history</h2>
-        <ColorGuessHistory guesses={history} />
-      </section>
-      <ShareDialog
-        open={showShareDialog}
-        onClose={() => setShowShareDialog(false)}
-        guessedColor={'#' + toGuessColor.color}
-        attempts={attemptsMade}
-        hints={history}
-      />
-    </main>
+        <section className="mt-4 text-center h-4">
+          <p>{attemptsLeft !== 5 && ` Remaining attempts: ${attemptsLeft}`}</p>
+        </section>
+
+        <section className="pb-8">
+          <h2 className="text-center font-semibold mt-12 mb-8">
+            Guess history
+          </h2>
+          <ColorGuessHistory guesses={history} />
+        </section>
+        <ShareDialog
+          open={showShareDialog}
+          onClose={() => setShowShareDialog(false)}
+          guessedColor={'#' + toGuessColor.color}
+          attempts={attemptsMade}
+          hints={history}
+        />
+      </main>
+    </>
   )
 }

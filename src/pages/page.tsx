@@ -1,5 +1,6 @@
 import { Hexagon, SwatchBook } from 'lucide-react'
 import CardLink from '@/components/home/card-link'
+import Navbar from '@/components/navbar'
 import { Link } from 'wouter'
 
 export default function Page() {
@@ -22,9 +23,10 @@ export default function Page() {
 
   return (
     <>
+      <Navbar title="Web Games" />
       <header className="set-width mb-8">
         <h1 className="text-center text-3xl font-bold">
-          Welcome to Web Games!
+          Welcome to Web Games! 🎮
         </h1>
         <p className="text-center mt-2 text-lg">
           Here you can play games that are related to web development. Have fun!

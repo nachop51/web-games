@@ -1,3 +1,18 @@
+import Navbar from '@/components/navbar'
+
 export default function GuessTheColorPage() {
-  return <div>Hello</div>
+  const handleGoBack = () => {
+    window.history.back()
+  }
+
+  return (
+    <>
+      <Navbar
+        title="Guess the color"
+        onGoBack={handleGoBack}
+        onReset={() => alert('Working on this feature as well')}
+      />
+      <div>Guess the Color game under construction 🚧</div>
+    </>
+  )
 }
